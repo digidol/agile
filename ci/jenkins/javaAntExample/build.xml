@@ -1,0 +1,63 @@
+<project name="JavaAntExample" default="dist" basedir=".">
+  <description>
+    Example Build file for the refactoring code example. 
+  </description>
+  
+  <!-- set global properties for this build -->
+  <property name="src" location="src"/>
+  <property name="build" location="build"/>
+  <property name="dist" location="dist"/>
+  <property name="libs" location="libs" />
+  <property name="reports.tests" location="reports" />
+  
+  <path id="project.class.path">
+     <pathelement path="${java.class.path}/"/>
+     <pathelement path="${libs}/junit-4.12.jar" />
+     <pathelement path="${libs}/hamcrest-core-1.3.jar" />
+  </path>
+
+  <target name="init">
+    <!-- Create the time stamp -->
+    <tstamp/>
+    <!-- Create the build directory structure used by compile -->
+    <mkdir dir="${build}"/>
+    <mkdir dir="${reports.tests}" />
+  </target>
+
+  <target name="compile" depends="init"
+        description="compile the source">
+    <!-- Compile the java code from ${src} into ${build} -->
+    <javac includeantruntime="false" srcdir="${src}" destdir="${build}">
+       <classpath refid="project.class.path"/> 
+    </javac>
+  </target>
+
+  <target name="test" depends="compile">
+     <junit printsummary="yes" haltonfailure="yes">
+        <classpath refid="project.class.path"/>
+        
+        <formatter type="plain"/>
+
+        <batchtest fork="yes" todir="${reports.tests}">
+            <fileset dir="${src}">
+              <include name="**/Test*.java"/>
+            </fileset>
+        </batchtest>
+    </junit>
+  </target> 
+
+  <target name="dist" depends="test" description="Generate the distribution">
+    <!-- Create the distribution directory -->
+    <mkdir dir="${dist}/lib"/>
+
+    <!-- Put everything in ${build} into the JavaAntExample-${DSTAMP}.jar file -->
+    <jar jarfile="${dist}/lib/JavaAntExample-${DSTAMP}.jar" basedir="${build}"/>
+  </target>
+
+  <target name="clean" description="Clean up project">
+    <!-- Delete the ${build} and ${dist} directory trees -->
+    <delete dir="${build}" />
+    <delete dir="${dist}" />
+    <delete dir="${reports}" />
+  </target>
+</project>
