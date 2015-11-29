@@ -83,9 +83,9 @@ public class Customer {
 	}
 	
 	private int getFrequentRenterPoints() {
-		int points = 0; 
+		int points = 1; 
 		for(Rental rental : customerRentals) { 
-		   points = rental.getFrequentRenterPoints();
+		   points += rental.getFrequentRenterPoints();
 		}
 		return points; 
 	}
