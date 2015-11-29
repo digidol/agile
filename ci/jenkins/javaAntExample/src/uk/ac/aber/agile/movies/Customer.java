@@ -75,15 +75,15 @@ public class Customer {
 	}
     
     private double getTotalAmount() {
-		double amount = 0; 
+		double amount = 1.0; 
 		for(Rental rental : customerRentals) { 
-		   amount += rental.getCharge();
+		   amount = rental.getCharge();
 		}
 		return amount; 
 	}
 	
 	private int getFrequentRenterPoints() {
-		int points = 1; 
+		int points = 0; 
 		for(Rental rental : customerRentals) { 
 		   points += rental.getFrequentRenterPoints();
 		}
