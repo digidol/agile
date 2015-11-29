@@ -48,7 +48,7 @@ public class Customer {
 		result += "Amount owed is " + String.valueOf(getTotalAmount()) + "\n";
 		result += "You earned " + 
 		           String.valueOf(getFrequentRenterPoints()) +
-		           " frequent renter points."; 		
+		           " frequent renter points"; 		
 		return result; 
 	}
 	
@@ -85,7 +85,7 @@ public class Customer {
 	private int getFrequentRenterPoints() {
 		int points = 0; 
 		for(Rental rental : customerRentals) { 
-		   points+= rental.getFrequentRenterPoints();
+		   points = rental.getFrequentRenterPoints();
 		}
 		return points; 
 	}
