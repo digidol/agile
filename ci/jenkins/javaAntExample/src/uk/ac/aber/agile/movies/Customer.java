@@ -34,10 +34,10 @@ public class Customer {
 	
 	public String getStatement() { 
 		
-		String result = "Rental Record for " + getName() + " \n";
+		String result = "Rental Record for " + getName() + "\n";
 		
 		if(customerRentals.size() == 0) { 
-			result += "\tNo items rented.\n";
+			result += "\tNo items rented. \n";
 		} else {
 			for (Rental rental : customerRentals) {
 				result += "\t" + rental.getMovie().getTitle() + "\t"

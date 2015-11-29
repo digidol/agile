@@ -34,7 +34,7 @@
   </target>
 
   <target name="test" depends="compile">
-     <junit printsummary="yes" haltonfailure="yes">
+     <junit printsummary="yes">
         <classpath refid="project.class.path"/>
         
         <formatter type="plain"/>
