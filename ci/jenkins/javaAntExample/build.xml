@@ -82,9 +82,11 @@
 
   <target name="coverage" depends="test"
   	      description="Generate the test coverage information">
+  	<echo message="Starting to generate the coverage report" />
 	<cobertura-report format="xml" 
 		   destdir="${reports.tests}"
            srcdir="${src}" />
+  	<echo message="Finished generating the coverage report" />
   </target>
   	
   <target name="dist" depends="coverage"
@@ -100,5 +102,6 @@
     <delete dir="${build}" />
     <delete dir="${dist}" />
     <delete dir="${reports.tests}" />
+  	<delete dir="${instrumented.dir}" />
   </target>
 </project>
