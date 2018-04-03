@@ -10,6 +10,7 @@
   <property name="dist" location="dist"/>
   <property name="libs" location="libs" />
   <property name="reports.tests" location="reports" />
+  <property name="instrumented.dir" location="cobertura" />
 
   <!-- Configruation for Cobertura -->
   <property name="cobertura.dir" value="${libs}" />
@@ -20,9 +21,9 @@
        <include name="lib/**/*.jar" />
     </fileset>
   </path>
-		 
+
   <taskdef classpathref="cobertura.classpath"
-  	       resource="tasks.properties" />
+	       resource="tasks.properties" />
 	
   <path id="project.class.path">
      <pathelement path="${java.class.path}/"/>
@@ -40,22 +41,16 @@
     <mkdir dir="${reports.tests}" />
   	<mkdir dir="${dist}" />
   	<mkdir dir="${dist}/lib"/>
+  	<mkdir dir="${instrumented.dir}" />
   </target>
 	
-	  <cobertura-instrument todir="${instrumented.dir}">
-	    <ignore regex="org.apache.log4j.*" />
-		<fileset dir="${build}">
-		   <include name="**/*.class" />
-		   <exclude name="**/*Test.class" />
-		</fileset>
-		<!-- 
-		<fileset dir="${dist}">
-		   <include name="JavaAntExample.jar" />
-		</fileset>
-		-->
-	  </cobertura-instrument>
-
-	
+  <cobertura-instrument todir="${instrumented.dir}">
+    <ignore regex="org.apache.log4j.*" />
+    <fileset dir="${build}">
+      <include name="**/*.class" />
+	  <exclude name="**/*Test.class" />
+    </fileset>
+  </cobertura-instrument>
 
   <target name="compile" depends="init"
         description="compile the source">
