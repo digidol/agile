@@ -1,6 +1,7 @@
 <project name="JavaAntExample" default="dist" basedir=".">
   <description>
-    Example Build file for the refactoring code example. 
+    Build file for the MovieList example, used for
+  	continous integration.
   </description>
   
   <!-- set global properties for this build -->

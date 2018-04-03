@@ -75,7 +75,7 @@ public class Customer {
 	}
     
     private double getTotalAmount() {
-		int amount = 0; 
+		double amount = 0; 
 		for(Rental rental : customerRentals) { 
 		   amount += rental.getCharge();
 		}
