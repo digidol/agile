@@ -3,6 +3,7 @@ package uk.ac.aber.agile.movies;
 public class Rental {
 
 	private Movie movie; 
+	
 	private int daysRented; 
 	
 	public Rental(Movie movie, int daysRented) { 
