@@ -1,3 +1,5 @@
 
 *.class
 *.DS_Store
+
+ci/jenkins/javaAntExample/reports/*.xml

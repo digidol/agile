@@ -10,36 +10,73 @@
   <property name="dist" location="dist"/>
   <property name="libs" location="libs" />
   <property name="reports.tests" location="reports" />
-  
+
+  <!-- Configruation for Cobertura -->
+  <property name="cobertura.dir" value="${libs}" />
+		 
+  <path id="cobertura.classpath">
+    <fileset dir="${cobertura.dir}">
+	   <include name="cobertura-2.1.1.jar" />
+       <include name="lib/**/*.jar" />
+    </fileset>
+  </path>
+		 
+  <taskdef classpathref="cobertura.classpath"
+  	       resource="tasks.properties" />
+	
   <path id="project.class.path">
      <pathelement path="${java.class.path}/"/>
      <pathelement path="${build}" />
      <pathelement path="${libs}/junit-4.12.jar" />
      <pathelement path="${libs}/hamcrest-core-1.3.jar" />
+  	 <pathelement path="${libs}/cobertura-2.1.1.jar" />
   </path>
-
+	
   <target name="init">
     <!-- Create the time stamp -->
     <tstamp/>
     <!-- Create the build directory structure used by compile -->
     <mkdir dir="${build}"/>
     <mkdir dir="${reports.tests}" />
+  	<mkdir dir="${dist}" />
+  	<mkdir dir="${dist}/lib"/>
   </target>
+	
+	  <cobertura-instrument todir="${instrumented.dir}">
+	    <ignore regex="org.apache.log4j.*" />
+		<fileset dir="${build}">
+		   <include name="**/*.class" />
+		   <exclude name="**/*Test.class" />
+		</fileset>
+		<!-- 
+		<fileset dir="${dist}">
+		   <include name="JavaAntExample.jar" />
+		</fileset>
+		-->
+	  </cobertura-instrument>
+
+	
 
   <target name="compile" depends="init"
         description="compile the source">
     <!-- Compile the java code from ${src} into ${build} -->
     <javac includeantruntime="false" srcdir="${src}" destdir="${build}">
-       <classpath refid="project.class.path"/> 
+    	   <classpath refid="project.class.path" />
     </javac>
   </target>
 
   <target name="test" depends="compile">
-     <junit printsummary="yes" haltonfailure="true">
-        <classpath refid="project.class.path"/>
-        
+     <junit printsummary="yes" haltonfailure="true" 
+     	    failureProperty="test.failed">
+     	<classpath location="${instrumented.dir}" />
+     	<classpath refid="project.class.path"/>
+     	<classpath refid="cobertura.classpath" />
+     	
         <formatter type="xml"/>
-
+     	<test name="${testcase}"
+              todir="${reports.tests}"
+              if="testcase" />
+     	
         <batchtest fork="yes" todir="${reports.tests}">
             <fileset dir="${src}">
               <include name="**/*Test*.java"/>
@@ -48,12 +85,19 @@
     </junit>
   </target> 
 
-  <target name="dist" depends="test" description="Generate the distribution">
-    <!-- Create the distribution directory -->
-    <mkdir dir="${dist}/lib"/>
-
-    <!-- Put everything in ${build} into the JavaAntExample-${DSTAMP}.jar file -->
-    <jar jarfile="${dist}/lib/JavaAntExample-${DSTAMP}.jar" basedir="${build}"/>
+  <target name="coverage" depends="test"
+  	      description="Generate the test coverage information">
+	<cobertura-report format="xml" 
+		   destdir="${reports.tests}"
+           srcdir="${src}" />
+  </target>
+  	
+  <target name="dist" depends="coverage"
+	      description="Generate the distribution">
+    
+  	<!-- Put everything in ${build} into the JavaAntExample-${DSTAMP}.jar file -->
+    <jar jarfile="${dist}/lib/JavaAntExample.jar"
+    	     basedir="${build}"/>
   </target>
 
   <target name="clean" description="Clean up project">
